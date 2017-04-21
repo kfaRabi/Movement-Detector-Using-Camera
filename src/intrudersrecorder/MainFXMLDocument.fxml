@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="876.0" styleClass="mainAnch" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="intrudersrecorder.MainFXMLDocumentController">
+  <children>
+    <AnchorPane layoutX="0.0" layoutY="0.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="28.0" prefWidth="883.0" styleClass="headerAnch">
+      <children>
+        <Label layoutX="14.0" layoutY="4.0" styleClass="headerLogoText" text="BURGLAR ALART" textFill="BLACK">
+          <font>
+            <Font name="System Bold Italic" size="17.0" />
+          </font>
+        </Label>
+      </children>
+      <stylesheets>
+        <URL value="@style.css" />
+      </stylesheets>
+    </AnchorPane>
+    <AnchorPane layoutX="-1.0" layoutY="29.0" prefHeight="29.0" prefWidth="884.0" styleClass="menu-bar">
+      <children>
+        <MenuBar layoutX="1.0" layoutY="1.0" prefHeight="28.0" prefWidth="255.00009999999747">
+          <menus>
+            <Menu mnemonicParsing="false" text="Actions">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#StartMenuAction" text="Start" />
+                <MenuItem mnemonicParsing="false" onAction="#StopMenuAction" text="Stop" />
+              </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Help">
+              <items>
+                <MenuItem mnemonicParsing="false" text="About" />
+              </items>
+            </Menu>
+          </menus>
+        </MenuBar>
+        <ToggleButton fx:id="cameraSwitch" layoutX="718.0" layoutY="1.0" mnemonicParsing="false" onAction="#cameraSwitchAction" prefHeight="23.000099999997474" prefWidth="147.0" text="Turn On Camera" />
+      </children>
+    </AnchorPane>
+    <AnchorPane layoutX="217.0" layoutY="546.0" prefHeight="54.0" prefWidth="647.0">
+      <children>
+        <Label layoutX="14.0" layoutY="22.0" text="Credits: Monirul Hasan (Tomal) And His Lectures">
+          <font>
+            <Font size="10.0" fx:id="x1" />
+          </font>
+          <textFill>
+            <Color blue="0.890" green="0.890" red="0.890" fx:id="x2" />
+          </textFill>
+        </Label>
+        <Label font="$x1" layoutX="447.0" layoutY="22.0" text="Developed By : Kazi Fozle Azim Rabi" textFill="$x2" />
+      </children>
+    </AnchorPane>
+    <AnchorPane layoutX="220.0" layoutY="58.0" prefHeight="489.0" prefWidth="644.0" styleClass="mainSectionAnch">
+      <children>
+        <ImageView fx:id="imageView" fitHeight="457.7499694824219" fitWidth="610.333333692034" layoutX="17.0" layoutY="17.0" pickOnBounds="true" preserveRatio="true" styleClass="imageView" />
+      </children>
+    </AnchorPane>
+    <AnchorPane layoutX="1.0" layoutY="60.0" prefHeight="541.0" prefWidth="219.00009999999747" style="" styleClass="mainAnch, slidersAnch">
+      <children>
+        <Label layoutX="0.0" layoutY="0.0" prefHeight="54.0" prefWidth="219.0" style="" text="CAMERA AND SENSIVITY ADJUSTMENT" textAlignment="CENTER" textOverrun="ELLIPSIS" wrapText="true">
+          <effect>
+            <Lighting>
+              <bumpInput>
+                <Shadow />
+              </bumpInput>
+              <light>
+                <javafx.scene.effect.Light.Distant />
+              </light>
+            </Lighting>
+          </effect>
+          <font>
+            <Font name="System Bold Italic" size="13.0" />
+          </font>
+        </Label>
+        <VBox alignment="TOP_LEFT" layoutX="-2.0" layoutY="54.0" prefHeight="435.0" prefWidth="207.0" spacing="10.0" styleClass="mainVBox">
+          <children>
+            <VBox id="VBox" alignment="CENTER_LEFT" spacing="0.0" styleClass="eachVBox">
+              <children>
+                <HBox alignment="CENTER_LEFT" disable="false" fillHeight="true" focusTraversable="false" prefHeight="29.0" prefWidth="210.0" visible="true">
+                  <children>
+                    <Label prefWidth="132.0" text="Resulation Width: " />
+                    <Label fx:id="resWidth" prefWidth="66.0" text="" />
+                  </children>
+                </HBox>
+                <Slider fx:id="resWidthSlider" prefHeight="30.0" prefWidth="194.0" />
+              </children>
+              <padding>
+                <Insets left="5.0" fx:id="x3" />
+              </padding>
+            </VBox>
+            <VBox id="VBox" alignment="CENTER_LEFT" padding="$x3" spacing="0.0" styleClass="eachVBox">
+              <children>
+                <HBox alignment="CENTER_LEFT" prefHeight="29.0" prefWidth="210.0">
+                  <children>
+                    <Label prefWidth="135.0" text="Resolution Height:   " />
+                    <Label fx:id="resHeight" prefWidth="66.0" text="" />
+                  </children>
+                </HBox>
+                <Slider fx:id="resHeightSlider" prefHeight="30.0" prefWidth="196.0" />
+              </children>
+            </VBox>
+            <VBox id="VBox" alignment="CENTER_LEFT" padding="$x3" spacing="0.0" styleClass="eachVBox">
+              <children>
+                <HBox alignment="CENTER_LEFT" prefHeight="29.0" prefWidth="210.0">
+                  <children>
+                    <Label prefWidth="129.0" text="Pixel Difference:  " />
+                    <Label fx:id="pixDiff" prefWidth="84.0" text="" />
+                  </children>
+                </HBox>
+                <Slider fx:id="pixDiffSlider" prefHeight="30.0" prefWidth="196.0" />
+              </children>
+            </VBox>
+            <VBox id="VBox" alignment="CENTER_LEFT" padding="$x3" spacing="0.0" styleClass="eachVBox">
+              <children>
+                <HBox alignment="CENTER_LEFT" prefHeight="29.0" prefWidth="210.0">
+                  <children>
+                    <Label text="Object Size:   " />
+                    <Label fx:id="objSize" prefWidth="105.0" text="" />
+                  </children>
+                </HBox>
+                <Slider fx:id="objSizeSlider" prefHeight="30.0" prefWidth="196.0" />
+              </children>
+            </VBox>
+            <VBox id="VBox" alignment="CENTER_LEFT" prefHeight="72.0" prefWidth="206.0" spacing="0.0" styleClass="eachVBox">
+              <children>
+                <HBox alignment="CENTER_LEFT" prefHeight="29.0" prefWidth="210.0">
+                  <children>
+                    <Label text="Border Size:   " />
+                    <Label fx:id="borderSize" prefWidth="105.0" text="" />
+                  </children>
+                </HBox>
+                <HBox alignment="CENTER_LEFT" prefHeight="29.0" prefWidth="210.0" spacing="10.0">
+                  <children>
+                    <Button mnemonicParsing="false" onAction="#reduceBorderSize" prefWidth="77.0" text="-" />
+                    <Button id="increaseBorderSize" mnemonicParsing="false" onAction="#increaseBorderSize" prefWidth="122.0" text="+" />
+                  </children>
+                  <padding>
+                    <Insets right="6.0" />
+                  </padding>
+                </HBox>
+              </children>
+              <padding>
+                <Insets bottom="7.0" left="5.0" />
+              </padding>
+            </VBox>
+            <VBox id="VBox" alignment="CENTER_LEFT" padding="$x3" spacing="8.0" styleClass="eachVBox">
+              <children>
+                <Label alignment="CENTER_LEFT" contentDisplay="CENTER" prefWidth="196.0" text="Border Color" />
+                <ToggleButton fx:id="toggleColor" alignment="CENTER" contentDisplay="LEFT" mnemonicParsing="false" onAction="#changeBorderColor" prefWidth="200.0" text="Set White" />
+              </children>
+            </VBox>
+          </children>
+          <padding>
+            <Insets top="10.0" />
+          </padding>
+        </VBox>
+      </children>
+    </AnchorPane>
+  </children>
+  <stylesheets>
+    <URL value="@style.css" />
+  </stylesheets>
+</AnchorPane>
