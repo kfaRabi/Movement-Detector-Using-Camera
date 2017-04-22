@@ -10,19 +10,19 @@ package intrudersrecorder;
  * @author myotherself
  */
 public class Coordinates {
-    private int r,c;
+    private int row, col;
 
-    public Coordinates(int r, int c) {
-        this.r = r;
-        this.c = c;
+    public Coordinates(int row, int col) {
+        this.row = row;
+        this.col = col;
     }
 
     public int getR() {
-        return r;
+        return row;
     }
 
     public int getC() {
-        return c;
+        return col;
     }
 
     

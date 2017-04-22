@@ -77,7 +77,8 @@ public class MainFXMLDocumentController implements Initializable {
     
 //    OCV VARIABLES
     private VideoCapture vidCap;
-    private Mat prevMat, subsRes, singleFrame;
+    private Mat previousMatrix, subtractionResult, singleFrame;
+    
     
 //    MY VARIABLES
     private ScheduledExecutorService SES;
@@ -106,8 +107,8 @@ public class MainFXMLDocumentController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         vidCap = new VideoCapture();
         
-        prevMat = new Mat();
-        subsRes = new Mat();
+        previousMatrix = new Mat();
+        subtractionResult = new Mat();
         col = new ArrayList<>();
         
         resolutionWidth = 100;
@@ -162,7 +163,7 @@ public class MainFXMLDocumentController implements Initializable {
             }
         }
         if(hasPrevious){
-            Core.absdiff(singleFrame, prevMat, subsRes);
+            Core.absdiff(singleFrame, previousMatrix, subtractionResult);
             hi = singleFrame.rows();
             wi = singleFrame.cols();
             col.clear();
@@ -171,23 +172,22 @@ public class MainFXMLDocumentController implements Initializable {
 //                    double v1[] = singleFrame.get(r, c);
 //                    double v2[] = prevMat.get(r, c);
 //                    double diff = Math.abs(v1[0] - v2[0]);
-                    prevMat.put(r, c, singleFrame.get(r, c)[0]);
-                    if(subsRes.get(r, c)[0] >= minPixelDiff){
-                        subsRes.put(r, c, 255);
+                    previousMatrix.put(r, c, singleFrame.get(r, c)[0]);
+                    if(subtractionResult.get(r, c)[0] >= minPixelDiff){
+                        subtractionResult.put(r, c, 255);
                         col.add(new Coordinates(r, c));
                     }
                     else{
-                        subsRes.put(r, c, 0);
+                        subtractionResult.put(r, c, 0);
                     }
                 }
             }
-            
-            //prevMat = singleFrame.clone();
+
             
             boolean ok = true;
             int sz = col.size();
             for(int i = 0; i < sz; i++){
-                double v[] = subsRes.get(col.get(i).getR(), col.get(i).getC());
+                double v[] = subtractionResult.get(col.get(i).getR(), col.get(i).getC());
                 if(v[0] == 255){
                     topLeftR = 2 * hi;
                     topLeftC = 2 * wi;
@@ -196,16 +196,14 @@ public class MainFXMLDocumentController implements Initializable {
                     cnt = 1;
                     floodFill(col.get(i).getR(), col.get(i).getC());
                     if(cnt >= minPixelsOfAnObject){
-//                            System.out.println("burglur........"+cnt);
-                        //floodOne(r, c);
+//                      System.out.println("burglur........"+cnt);
                         drawBorder();
-                        //ok = false;
                     }
                 }
             }
 
             
-            // using non recursive flood fill
+// using non recursive flood fill
             
 //            for(int i = 0; i < sz; i++){
 //                topLeftR = 2 * hi;
@@ -224,26 +222,6 @@ public class MainFXMLDocumentController implements Initializable {
 //                    }
 //                }
 //            }
-
-
-// increase brightness of the changed pixels            
-//            for(int r = 0; r < hi; r++){
-//                for(int c = 0; c < wi; c++){
-//                    double v[] = subsRes.get(r, c);
-//                    double originalV[] = singleFrame.get(r, c);
-//                    if(v[0] == 1){
-////                        if(originalV[0] * 1.1 > 255){
-////                            subsRes.put(r, c, 255);
-////                        }
-////                        else{
-////                            subsRes.put(r, c, originalV[0] * 1.1);
-////                        }
-//                    }
-//                    else{
-//                        subsRes.put(r, c, originalV[0]);
-//                    }
-//                }
-//            }
             
             
 //            System.out.println("h: "+subsRes.rows() + " w "+subsRes.cols());
@@ -252,14 +230,9 @@ public class MainFXMLDocumentController implements Initializable {
             inputImage = new Image(new ByteArrayInputStream(buff.toArray()));
         }
         else{
-            //System.out.println("first time");
+            //System.out.println("first frame");
             hasPrevious = true;
-            prevMat = singleFrame.clone();
-            //System.out.println("h: "+prevMat.rows() + " pppp w "+prevMat.cols());
-            //System.out.println("h: "+singleFrame.size().height + " sss w "+singleFrame.size().width);
-            //subsRes = new Mat(prevMat.rows(), prevMat.cols(), CvType.CV_8UC1);
-            //System.out.println(singleFrame.dump());
-            //System.out.println("done 1st");
+            previousMatrix = singleFrame.clone();
         }
         return inputImage;
     }
@@ -269,28 +242,6 @@ public class MainFXMLDocumentController implements Initializable {
     int dc[] = {+0, +0, -1, +1};
     
     
-//    private void flood(int r, int c) {
-//        if(r >= 0 && r < hi && c >= 0 && c < wi){
-//            double v[] = subsRes.get(r, c);
-//            if(v[0] == 255){
-//                topLeftR = Math.min(r, topLeftR);
-//                topLeftC = Math.min(c, topLeftC);
-//                bottomRightR = Math.max(r, bottomRightR);
-//                bottomRightC = Math.max(c, bottomRightC);
-//                cnt++;
-//                subsRes.put(r, c, 2);
-//                for(int i = 0; i < 4; i++){
-//                    flood(r + dr[i], c + dc[i]);
-//                }
-//            }
-//            else{
-//                return;
-//            }
-//        }
-//        else{
-//            return;
-//        }
-//    }
 
     private void floodFill(int r, int c) {
         topLeftR = Math.min(r, topLeftR);
@@ -298,31 +249,13 @@ public class MainFXMLDocumentController implements Initializable {
         bottomRightR = Math.max(r, bottomRightR);
         bottomRightC = Math.max(c, bottomRightC);
         cnt++;
-        subsRes.put(r, c, 2);
+        subtractionResult.put(r, c, 2);
         for(int i = 0; i < 4; i++){
-            if((r + dr[i]) >= 0 && (r + dr[i]) < hi && (c + dc[i]) >= 0 && (c + dc[i]) < wi && subsRes.get(r + dr[i], c + dc[i])[0] == 255){
+            if((r + dr[i]) >= 0 && (r + dr[i]) < hi && (c + dc[i]) >= 0 && (c + dc[i]) < wi && subtractionResult.get(r + dr[i], c + dc[i])[0] == 255){
                 floodFill(r + dr[i], c + dc[i]);
             }
         }
     }
-    
-//    private void floodOne(int r, int c) {
-//        if(r >= 0 && r < hi && c >= 0 && c < wi){
-//            double v[] = subsRes.get(r, c);
-//            if(v[0] == 2){
-//                subsRes.put(r, c, 1);
-//                for(int i = 0; i < 4; i++){
-//                    flood(r + dr[i], c + dc[i]);
-//                }
-//            }
-//            else{
-//                return;
-//            }
-//        }
-//        else{
-//            return;
-//        }
-//    }
 
     private void nonRecursiveFloodfill(Coordinates cord){
         Queue<Coordinates> q = new LinkedList<>();
@@ -331,9 +264,9 @@ public class MainFXMLDocumentController implements Initializable {
             cnt++;
             cord = q.poll();
             int r = cord.getR(), c = cord.getC();
-            subsRes.put(r, c, 2);
+            subtractionResult.put(r, c, 2);
             for(int i = 0; i < 4; i++){
-                if((r + dr[i]) >= 0 && (r + dr[i]) < hi && (c + dc[i]) >= 0 && (c + dc[i]) < wi && subsRes.get(r + dr[i], c + dc[i])[0] == 255){
+                if((r + dr[i]) >= 0 && (r + dr[i]) < hi && (c + dc[i]) >= 0 && (c + dc[i]) < wi && subtractionResult.get(r + dr[i], c + dc[i])[0] == 255){
                     q.add(new Coordinates(r + dr[i], c + dc[i]));
                 }
             }
@@ -488,7 +421,5 @@ public class MainFXMLDocumentController implements Initializable {
             toggleColor.setStyle("-fx-border-color:black black black black");
         }
     }
-    
-    
     
 }
